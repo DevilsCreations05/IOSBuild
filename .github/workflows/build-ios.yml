@@ -13,6 +13,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Capacitor plugin dependencies
+        run: npm install
+
       - name: Select Xcode version
         run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
 
