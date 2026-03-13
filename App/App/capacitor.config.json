@@ -1,0 +1,39 @@
+{
+	"appId": "com.myhostle.app",
+	"appName": "MyHostle",
+	"webDir": "dist",
+	"plugins": {
+		"SplashScreen": {
+			"launchAutoHide": false,
+			"backgroundColor": "#1a1a2e",
+			"showSpinner": false,
+			"androidScaleType": "CENTER_CROP",
+			"splashFullScreen": true,
+			"splashImmersive": false,
+			"useDialog": false
+		},
+		"StatusBar": {
+			"backgroundColor": "#000000",
+			"style": "LIGHT",
+			"overlaysWebView": false
+		}
+	},
+	"android": {
+		"backgroundColor": "#ffffff",
+		"allowMixedContent": true
+	},
+	"server": {
+		"androidScheme": "https",
+		"allowNavigation": [
+			"myhostle.com",
+			"*.myhostle.com",
+			"myhosteldesk.com",
+			"*.myhosteldesk.com"
+		]
+	},
+	"packageClassList": [
+		"AppPlugin",
+		"SplashScreenPlugin",
+		"StatusBarPlugin"
+	]
+}
