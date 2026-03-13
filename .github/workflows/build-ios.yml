@@ -1,0 +1,53 @@
+name: Build iOS App
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Select Xcode version
+        run: sudo xcode-select -s /Applications/Xcode_16.2.app/Contents/Developer
+
+      - name: Resolve SPM dependencies
+        run: |
+          cd App
+          xcodebuild -resolvePackageDependencies \
+            -project App.xcodeproj \
+            -scheme App
+
+      - name: Build for iOS (unsigned)
+        run: |
+          cd App
+          xcodebuild build \
+            -project App.xcodeproj \
+            -scheme App \
+            -sdk iphoneos \
+            -configuration Release \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            DEVELOPMENT_TEAM="" \
+            -derivedDataPath ./build
+
+      - name: Create unsigned IPA
+        run: |
+          cd App/build/Build/Products/Release-iphoneos
+          mkdir -p Payload
+          cp -r App.app Payload/
+          zip -r MyHostle.ipa Payload
+          ls -la MyHostle.ipa
+
+      - name: Upload IPA artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MyHostle-iOS
+          path: App/build/Build/Products/Release-iphoneos/MyHostle.ipa
+          retention-days: 30
